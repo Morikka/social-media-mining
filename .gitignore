@@ -1,4 +1,6 @@
 *.DS_Store
 Data/TestData
 Code/__pycache__/**
-Code/my_tweet.py
+Code/my_tweet
+Code/t.out
+Code/cat.png
