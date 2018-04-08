@@ -6,6 +6,7 @@ from wordcloud import WordCloud, STOPWORDS
 import re
 from sklearn.feature_extraction import stop_words
 import nltk
+import operator
 
 def clean_str(string, TREC=False):
   """
@@ -27,7 +28,7 @@ def clean_str(string, TREC=False):
   string = re.sub(r"\s{2,}", " ", string)
   return string.strip() if TREC else string.strip().lower()
 
-def test(words):
+def process(words):
   word_dict = {}
   result = ""
   real_words = set(nltk.corpus.words.words())
@@ -35,6 +36,16 @@ def test(words):
     if w not in stop_words.ENGLISH_STOP_WORDS and w in real_words and len(w)>1:
       print(w)
       result = result + w + " "
+      if w in word_dict:
+        word_dict[w] += 1
+      else:
+        word_dict[w] = 1
+  sorted_word_dict = sorted(word_dict.items(), key=lambda kv: kv[1], reverse=True)
+  with open("t.out","w") as f:
+    for items in sorted_word_dict:
+      f.write(str(items))
+      f.write("\n")
+  print(sorted_word_dict)
   return result
 
 
@@ -50,7 +61,7 @@ def drawname(kind):
   words = text.split()
 
 # doc-term matrix with raw word count
-  final_text = test(words)
+  final_text = process(words)
   print(final_text)
 
   # read image
@@ -60,20 +71,18 @@ def drawname(kind):
   # stopwords.add("rt")
   # # text = "aa bb cc dd aa cc aa dd aa cc aa cc"
 
-  # # wc = WordCloud(max_words=1000, mask=mask, stopwords=stopwords, margin=10,
-  #                # random_state=1).generate(text)
-  wc = WordCloud(max_words=1000, mask=mask, margin=10,random_state=1).generate(final_text)
-  # # generate word cloud
-  # wc.generate(text)
-  # store to file
-  wc.to_file(kind+".png")
+  # wc = WordCloud(max_words=1000, mask=mask, margin=10,random_state=1).generate(final_text)
+  # # # generate word cloud
+  # # wc.generate(text)
+  # # store to file
+  # wc.to_file(kind+".png")
 
-  # show
-  plt.imshow(wc, interpolation='bilinear')
-  plt.axis("off")
-  plt.figure()
-  default_colors = wc.to_array()
-  plt.imshow(default_colors, interpolation="bilinear")
-  # plt.imshow(alice_mask, cmap=plt.cm.gray, interpolation='bilinear')
-  plt.axis("off")
-  plt.show()
+  # # show
+  # plt.imshow(wc, interpolation='bilinear')
+  # plt.axis("off")
+  # plt.figure()
+  # default_colors = wc.to_array()
+  # plt.imshow(default_colors, interpolation="bilinear")
+  # # plt.imshow(alice_mask, cmap=plt.cm.gray, interpolation='bilinear')
+  # plt.axis("off")
+  # plt.show()
