@@ -5,3 +5,6 @@ It's social media mining project, we crawled tweets having #cats or #dog hashtag
 + 个人report / 测试类数据不需上传，请善于使用.gigitnore / 客户端
 + 有问题可以查阅 Demand.pdf (啊就是布置作业的文件啦)
 + 请不要随意 puch 到主分支
+
+# Thanks
+City data (the json file): https://github.com/spacetimeme/china-city
