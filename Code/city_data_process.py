@@ -52,6 +52,7 @@ get_info('烟台')
 # get_info('北京')
 
 cat_dict = {}
+dog_dict = {"北京":"19034","上海":"13684","广东":"11720","浙江":"8156","四川":"4993","江苏":"9205","湖北":"4194","陕西":"3226","天津":"2340","重庆":"2287","湖南":"2869","河南":"2546","山东":"4547","辽宁":"2701","福建":"2469","黑龙江":"1324","安徽":"1776","云南":"1283","吉林":"1002","河北":"1672","广西":"1071","江西":"1040","香港":"482","山西":"817","贵州":"542","甘肃":"479","新疆":"497","内蒙古":"649","海南":"344","澳门":"178","宁夏":"195","台湾":"143","西藏":"163","青海":"106"}
 with open('../raw data/CatPeople.csv') as f:
 # with open('../raw data/DogPeople.csv') as f:
   f_csv = csv.reader(f)
@@ -86,7 +87,10 @@ with open('t.out','w') as t:
   # print(province_count)
 
   for items in province_count:
-    t.write("{\"name\":\""+str(items)+"\", \"value\": "+str(province_count[items])+"},")
+    # t.write('\"'+ str(items) + '\":\"+' )
+    # t.write('\"' + str(items) + '\":\"' + str(province_count[items]-int(dog_dict[items])) +'\",')
+    # t.write(str(items))
+    t.write("{\"name\":\""+str(items)+"\", \"value\": "+str(province_count[items]-int(dog_dict[items]))+"},")
     t.write('\n')
 
 # import requests

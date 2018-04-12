@@ -1,0 +1,216 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://d3js.org/d3.v3.js"></script>
+</head>
+<body>
+    <div class = "mapBox">
+    <div class="ChinaMap"></div>
+    </div>
+    <script charset="utf-8">
+var ChinaMap = function(opt) {
+    var opts = {
+        data: opt.data,
+        container: '.ChinaMap',
+        legend: '', // tooltip中可以加数据注释
+        width: 1300, // 宽
+        height: 800, // 高
+        scale: 800, // 缩放
+        center: [107, 38], //经纬度中心
+        bgColor: "#cbd4dd", // 填充背景色
+        borderColor: "#fff", // 填充边框色
+        hoverColor: "#ffaf57", // 各省鼠标hover时的背景色
+        tooltip: { // 提示框
+            bgColor: "rgba(0,0,0,.8)", // 提示框背景色
+            fontSize: "12px", // 提示框文字大小
+            color: "#fff" // 提示框文字颜色
+        },
+        gradient: { // 渐变
+            startColor: "#aadcff", // 渐变开始颜色
+            // startColor: "#ffffff", // 渐变开始颜色
+            endColor: "#0050a2", // 渐变结束颜色
+            redColor: "#d7191c",
+            textColor: "#666", // 渐变文字颜色
+            fontSize: "12px", // 渐变文字大小
+            textAnchor: "middle", // 渐变文字位置
+            x: 50, // 渐变色块X轴位置
+            y: 700, // 渐变色块Y轴位置
+            width: 140, // 渐变色块宽
+            height: 20 // 渐变色块高
+        },
+        chinaGeoUrl: 'china.geojson',
+    };
+
+    var projection = d3.geo.mercator()
+        .center(opts.center)
+        .scale(opts.scale)
+        .translate([opts.width / 2, opts.height / 2]);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var tooltip = d3.select(opts.container).append('div')
+                        .attr('class', 'tooltip')
+                        .attr('opacity', 0.0)
+                        .style('background', opts.tooltip.bgColor)
+                        .style('font-size', opts.tooltip.fontSize)
+                        .style('color', opts.tooltip.color)
+                        .style('padding', '10px')
+                        .style('border-radius', '3px')
+                        .style('position', 'absolute')
+                        .style('opacity', 0.0);
+
+    d3.json('china.geojson', function(error, root) {
+        if (error) {
+            return console.error(error);
+        }
+        var values = [];
+        for (var i = 0; i < opts.data.length; i++) {
+            var name = opts.data[i].name;
+            var value = opts.data[i].value;
+            values[name] = value;
+        }
+        console.log(values)
+    // var maxvalue = d3.max(opts.data, function(d) { return d.value; });
+        var maxvalue = 20000;
+        var minvalue = 0;
+        var linear = d3.scale.linear()
+            .domain([minvalue, maxvalue])
+            .range([0, 1]);
+        var a = d3.rgb(opts.gradient.startColor);
+        var b = d3.rgb(opts.gradient.endColor);
+        var computeColor = d3.interpolate(a, b);
+
+        d3.select(opts.container).append("svg")
+            .attr("class", "chinaMap_D3")
+            .attr("width", opts.width)
+            .attr("height", opts.height)
+            .attr("fill", opts.bgColor)
+            .append("g")
+            .attr("transform", "translate(0,0)")
+            .selectAll("path")
+            .data(root.features)
+            .enter()
+            .append("path")
+            .attr("stroke", opts.borderColor)
+            .attr("stroke-width",1)
+            .attr("d", path)
+            .attr("fill", function(d, i) {
+                console.log(values[d.properties.name]);
+                return computeColor(linear(values[d.properties.name]));
+            })
+            .on("mouseover", function(d, i) {
+                d3.select(this)
+                    .attr("fill", opts.hoverColor);
+
+                var curName = d.properties.name;
+                var curValue = '-';
+                for (var j = 0; j < opts.data.length; j++) {
+                    if (opts.data[j].name == curName) {
+                        curValue = opts.data[j].value;
+                    }
+                }
+
+                tooltip.html(opts.legend + curName + ': ' + curValue)
+                    .style('left', (d3.event.pageX) + 'px')
+                    .style('top', (d3.event.pageY + 10) + 'px')
+                    .style('opacity', 1.0);
+            })
+            .on("mouseout", function(d, i) {
+                d3.select(this)
+                    .attr("fill", function(d, i) {
+                        return computeColor(linear(values[d.properties.name]));
+                    });
+
+                tooltip.style('opacity', 0.0);
+            });
+
+    var defs = d3.select(opts.container+ ' .chinaMap_D3').append('defs');
+    var linearGradient = defs.append('linearGradient')
+                .attr('id', 'linearColor')
+                .attr('x1', '0%')
+                .attr('y1', '0%')
+                .attr('x2', '100%')
+                .attr('y2', '0%');
+    var stop1 = linearGradient.append('stop')
+                .attr('offset', '0%')
+                .style('stop-color', a);
+    var stop2 = linearGradient.append('stop')
+                .attr('offset', '100%')
+                .style('stop-color', b);
+
+    var colorRect = d3.select(opts.container+ ' .chinaMap_D3').append('rect')
+                .attr('x', opts.gradient.x)
+                .attr('y', opts.gradient.y)
+                .attr('width', opts.gradient.width)
+                .attr('height', opts.gradient.height)
+                .style('fill', 'url(#' + linearGradient.attr('id') + ')');
+    var minValueText = d3.select(opts.container+ ' .chinaMap_D3').append('text')
+                .attr('class', 'valueText')
+                .attr('x', opts.gradient.x)
+                .attr('y', opts.gradient.y)
+                .attr('dy', '-0.4em')
+                .style('fill', opts.gradient.textColor)
+                .style('font-size', opts.gradient.fontSize)
+                .style('text-anchor', opts.gradient.textAnchor)
+                .text(function() {
+                    return minvalue;
+                });
+    var maxValueText = d3.select(opts.container+ ' .chinaMap_D3').append('text')
+                .attr('class', 'valueText')
+                .attr('x', opts.gradient.x + opts.gradient.width)
+                .attr('y', opts.gradient.y)
+                .attr('dy', '-0.4em')
+                .style('fill', opts.gradient.textColor)
+                .style('font-size', opts.gradient.fontSize)
+                .style('text-anchor', opts.gradient.textAnchor)
+                .text(function() {
+                    return maxvalue;
+                });
+
+    });
+}
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        var provinceData = [
+            {"name":"北京", "value": 19034},
+            {"name":"上海", "value": 13684},
+            {"name":"广东", "value": 11720},
+            {"name":"浙江", "value": 8156},
+            {"name":"四川", "value": 4993},
+            {"name":"江苏", "value": 9205},
+            {"name":"湖北", "value": 4194},
+            {"name":"陕西", "value": 3226},
+            {"name":"天津", "value": 2340},
+            {"name":"重庆", "value": 2287},
+            {"name":"湖南", "value": 2869},
+            {"name":"河南", "value": 2546},
+            {"name":"山东", "value": 4547},
+            {"name":"辽宁", "value": 2701},
+            {"name":"福建", "value": 2469},
+            {"name":"黑龙江", "value": 1324},
+            {"name":"安徽", "value": 1776},
+            {"name":"云南", "value": 1283},
+            {"name":"吉林", "value": 1002},
+            {"name":"河北", "value": 1672},
+            {"name":"广西", "value": 1071},
+            {"name":"江西", "value": 1040},
+            {"name":"香港", "value": 482},
+            {"name":"山西", "value": 817},
+            {"name":"贵州", "value": 542},
+            {"name":"甘肃", "value": 479},
+            {"name":"新疆", "value": 497},
+            {"name":"内蒙古", "value": 649},
+            {"name":"海南", "value": 344},
+            {"name":"澳门", "value": 178},
+            {"name":"宁夏", "value": 195},
+            {"name":"台湾", "value": 143},
+            {"name":"西藏", "value": 163},
+            {"name":"青海", "value": 106}
+        ];
+
+    var opt = {data: provinceData}
+    new ChinaMap(opt);
+    </script>
+</body>
+</html>
