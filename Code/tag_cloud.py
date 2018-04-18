@@ -126,12 +126,12 @@ def process(words):
 def drawname(kind):
   d = path.dirname(__file__)
   # Read text
-  text = open(path.join(d, '../Data/Testdata/'+kind+'.in')).read()
+  text = open(path.join(d, '../Data/'+kind+'_Tweet.in')).read()
 
   text = clean_str(text)
   # print(text)
   words = text.split()
-  # text.close()
+  final_text = process(words)
 
 # with open('../Data/Dict/positive-words.txt') as f:
   text = open(path.join(d, '../Data/Dict/positive-words.txt')).read()

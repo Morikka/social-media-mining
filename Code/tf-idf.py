@@ -62,7 +62,7 @@ def process(words):
 def drawname(kind):
   d = path.dirname(__file__)
   # Read text
-  text = open(path.join(d, '../Data/Testdata/'+kind+'.in')).read()
+  text = open(path.join(d, '../Data/'+kind+'_Tweet.in')).read()
 
   text = clean_str(text)
   # print(text)
@@ -81,8 +81,8 @@ def drawname(kind):
 
   return final_text
 
-cat = drawname("cat")
-dog = drawname("dog")
+cat = drawname("Cat")
+dog = drawname("Dog")
 
 d = path.dirname(__file__)
 
@@ -124,4 +124,12 @@ for items in lis:
       cat_neg += cat[items]
     elif items in dog and items not in cat:
       dog_neg += dog[items]
+
+print(cat_pos)
+print(cat_neg)
+print(dog_pos)
+print(dog_neg)
+print(cat_neg/cat_pos)
+print(dog_neg/dog_pos)
+
 
