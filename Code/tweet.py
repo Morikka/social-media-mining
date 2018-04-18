@@ -12,9 +12,9 @@ api = tweepy.API(auth)
 
 with open('t.out','w') as f:
   for tweet in tweepy.Cursor(api.search,
-                           q='cat',
+                           q='#dog', #when getting data about cats, q should be changed into #cat
                            lang="en",
                            count=100).items():
-    print(tweet.created_at, tweet.text)
+    # print(tweet.created_at, tweet.text)
     f.write(tweet.text)
     f.write("\n")
