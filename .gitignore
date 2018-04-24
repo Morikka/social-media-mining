@@ -4,3 +4,7 @@ Code/__pycache__/**
 Code/my_tweet
 Code/t.out
 Code/cat.png
+Result/Report/*
+!Result/Report/report.tex
+!Result/Report/cite.bib
+!Result/Report/report.pdf
