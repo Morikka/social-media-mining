@@ -6,21 +6,9 @@ Some people love cats while some love dogs, then they are called as `cat people`
 
 # Notice
 
-`Code` stores codes linked to this project.
+Read result/report/report.pdf
 
-`Data` stores part of the research data.
-
-`Result` stores our last result.
-
-`Demand.pdf` is what we need to do.
-
-`Code` 文件保存项目代码
-
-`Data` 文件存储部分挖掘数据
-
-`Result` 文件存储我们的结果
-
-`Demand.pdf` 为题目要求
+见 report.pdf
 
 # Thanks
 
