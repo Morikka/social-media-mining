@@ -14,7 +14,7 @@
 
 `tag_cloud` `tag_cloud_cat` `tag_cloud_dog` used to draw tag cloud picture for cat and dog
 
-# Book Movie and Activity Analysis
+# Book, Movie and Activity Analysis
 
 analyzeFollow.py 分析豆瓣用户的粉丝，关注者及常去小组的数量，寻找相似度
 
