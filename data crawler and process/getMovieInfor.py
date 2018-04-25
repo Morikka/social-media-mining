@@ -105,7 +105,7 @@ def getMatrix(type):
 
     PeopleDataFrame = pd.DataFrame(np.zeros((41, 2001)), columnNames, userIds)
     count = 0
-
+    defaultValue = 1/37
     for i in range(20):
 
         with open('userMoviesBooks_%sPeople/record_%s.pickle' % (type, str(i)), 'rb') as file:
@@ -124,11 +124,13 @@ def getMatrix(type):
                         pass
                 if len(likes)!=0:
                     PeopleDataFrame[key] = sum(likes)/k
-                    count += 1
+                    # count += 1
                 else:
-                    del PeopleDataFrame[key]
+                    # del PeopleDataFrame[key]
+                    PeopleDataFrame[key] = defaultValue
             else:
-                del PeopleDataFrame[key]
+                # del PeopleDataFrame[key]
+                PeopleDataFrame[key] = defaultValue
 
     # regularizer = PeopleDataFrame.apply(sum)
     #
@@ -268,36 +270,49 @@ def dataMining(matrix1, matrix2):
     plt.scatter([t[0] for t in matrix_projected[:942]], [t[1] for t in matrix_projected[:942]], c='red', alpha=0.3)
     plt.scatter([t[0] for t in matrix_projected[942:]], [t[1] for t in matrix_projected[942:]], c='blue', alpha=0.3)
     plt.show()
-    X_train, X_test, y_train, y_test = train_test_split(matrix_projected, labels, test_size=0.2, random_state=3)
-    #
-    # no significant find
-    #
-    lr = LogisticRegression()
-    lr.fit(X_train, y_train)
-    print('logistic regression score: ', lr.score(X_test, y_test))
+
+    result = np.zeros((6, 10))
+    for i in range(10):
+        X_train, X_test, y_train, y_test = train_test_split(matrix_projected, labels, test_size=0.2, random_state=3)
+        #
+        # no significant find
+        #
+        lr = LogisticRegression()
+        lr.fit(X_train, y_train)
+        result[0][i] = lr.score(X_test, y_test)
+        # print('logistic regression score: ', lr.score(X_test, y_test))
 
 
-    clf = DecisionTreeClassifier()
-    clf.fit(X_train, y_train)
-    print('ldecision tree score: ', clf.score(X_test, y_test))
+        clf = DecisionTreeClassifier()
+        clf.fit(X_train, y_train)
+        result[1][i] = clf.score(X_test, y_test)
+        # print('ldecision tree score: ', clf.score(X_test, y_test))
 
-    clf = SVC()
-    clf.fit(X_train, y_train)
-    print('SVM score: ', clf.score(X_test, y_test))
+        clf = SVC()
+        clf.fit(X_train, y_train)
+        result[2][i] = clf.score(X_test, y_test)
+        # print('SVM score: ', clf.score(X_test, y_test))
 
-    clf = GaussianNB()
-    clf.fit(X_train, y_train)
-    print('Naive bayes score: ', clf.score(X_test, y_test))
+        clf = GaussianNB()
+        clf.fit(X_train, y_train)
+        result[3][i] = clf.score(X_test, y_test)
+        # print('Naive bayes score: ', clf.score(X_test, y_test))
 
-    neigh = KNeighborsClassifier(n_neighbors=3)
-    neigh.fit(X_train, y_train)
-    print('k nearest neighbour score: ', neigh.score(X_test, y_test))
+        neigh = KNeighborsClassifier(n_neighbors=3)
+        neigh.fit(X_train, y_train)
+        result[4][i] = neigh.score(X_test, y_test)
+        # print('k nearest neighbour score: ', neigh.score(X_test, y_test))
 
-    clf = GradientBoostingClassifier()
-    clf.fit(X_train, y_train)
-    print('boosting score: ', clf.score(X_test, y_test))
-    #
-    # print("conclusion: no significant evidence to differ cat people from dog people in the respect of movie preference")
+        clf = GradientBoostingClassifier()
+        clf.fit(X_train, y_train)
+        result[5][i] = clf.score(X_test, y_test)
+        # print('boosting score: ', clf.score(X_test, y_test))
+        # print(result)
+
+    result = result.mean(axis=1)
+    print('average scores are')
+    for item in result:
+        print(item)
 
 
 dataMining(dogMovieMatrix, catMovieMatrix)
