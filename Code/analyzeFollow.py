@@ -67,34 +67,48 @@ labels.extend(np.ones((1, 1946)).tolist()[0])
 
 dogList.extend(catList)
 wholeList = dogList
-
-
-# X_train, X_test, y_train, y_test = train_test_split(wholeList, labels, test_size=0.3, random_state=0)
 #
-# lr = LogisticRegression()
-# lr.fit(X_train, y_train)
-# print('logistic regression score: ', lr.score(X_test, y_test))
+# result = np.zeros((6, 10))
+# for i in range(10):
+#     X_train, X_test, y_train, y_test = train_test_split(matrix_projected, labels, test_size=0.2, random_state=3)
+#     #
+#     # no significant find
+#     #
+#     lr = LogisticRegression()
+#     lr.fit(X_train, y_train)
+#     result[0][i] = lr.score(X_test, y_test)
+#     # print('logistic regression score: ', lr.score(X_test, y_test))
 #
 #
-# clf = DecisionTreeClassifier()
-# clf.fit(X_train, y_train)
-# print('ldecision tree score: ', clf.score(X_test, y_test))
+#     clf = DecisionTreeClassifier()
+#     clf.fit(X_train, y_train)
+#     result[1][i] = clf.score(X_test, y_test)
+#     # print('ldecision tree score: ', clf.score(X_test, y_test))
 #
-# clf = SVC()
-# clf.fit(X_train, y_train)
-# print('SVM score: ', clf.score(X_test, y_test))
+#     clf = SVC()
+#     clf.fit(X_train, y_train)
+#     result[2][i] = clf.score(X_test, y_test)
+#     # print('SVM score: ', clf.score(X_test, y_test))
 #
-# clf = GaussianNB()
-# clf.fit(X_train, y_train)
-# print('Naive bayes score: ', clf.score(X_test, y_test))
+#     clf = GaussianNB()
+#     clf.fit(X_train, y_train)
+#     result[3][i] = clf.score(X_test, y_test)
+#     # print('Naive bayes score: ', clf.score(X_test, y_test))
 #
-# neigh = KNeighborsClassifier(n_neighbors=5)
-# neigh.fit(X_train, y_train)
-# print('k nearest neighbour score: ', neigh.score(X_test, y_test))
+#     neigh = KNeighborsClassifier(n_neighbors=3)
+#     neigh.fit(X_train, y_train)
+#     result[4][i] = neigh.score(X_test, y_test)
+#     # print('k nearest neighbour score: ', neigh.score(X_test, y_test))
 #
-# clf = GradientBoostingClassifier()
-# clf.fit(X_train, y_train)
-# print('boosting score: ', clf.score(X_test, y_test))
+#     clf = GradientBoostingClassifier()
+#     clf.fit(X_train, y_train)
+#     result[5][i] = clf.score(X_test, y_test)
+#     # print('boosting score: ', clf.score(X_test, y_test))
+#     # print(result)
+#
+# result = result.mean(axis=1)
+# for item in result:
+#     print(item)
 
 # fig = plt.figure()
 # array, bins = np.histogram(np.array(cat[1]).astype('float'), bins='auto')
