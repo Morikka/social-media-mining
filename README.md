@@ -1,6 +1,6 @@
 # social-media-mining
 
-Some people love cats while some love dogs, then they are called as `cat people` and `dog people`. We wanted to understand more about the social characteristics of those two camps of animal lovers. So we crawled several social media websites such as Douban and Twitter, and want to find out whether there are some differences and similarities between those two kinds of people.[1]
+Some people love cats while some love dogs, then they are called as `cat people` and `dog people`. We wanted to understand more about the social characteristics of those two camps of animal lovers. So we crawled several social media websites such as Douban and Twitter to find out if cat lovers and dog lovers have any difference or similarity.
 
 猫和狗是最流行的两种宠物，爱猫人士与爱狗人士被分别称为`cat people` and `dog people`。 我们试图挖掘社交网络上这两类人是否在一些特征上有相同点和不同点。[1]
 
