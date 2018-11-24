@@ -16,6 +16,10 @@ City data and D3 visualization: https://github.com/spacetimeme/china-city
 
 Sentiment Analysis Dictionary: http://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html [2]
 
+# A fun link
+
+https://www.youtube.com/watch?v=XCiB4PuaYg0
+
 # References
 
 [1] L., Dirk Neumann. (n.d.). Cat People, Dog People. Retrieved August 7, 2016, from https://research.fb.com/cat-people-dog-people/
